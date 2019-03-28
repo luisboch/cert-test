@@ -22,14 +22,14 @@ import java.util.Formatter;
  */
 public class JKSUtil {
 
-    private static final String CERT_BEGIN = "-----BEGIN CERTIFICATE-----\n";
+    private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----\n";
     private static final String END_CERT = "-----END CERTIFICATE-----";
 
     public static String extractFingerprintFromPEM(String fileName) throws Throwable {
         File file = loadFile(fileName);
 
         String readLines = readLines(file);
-        readLines = readLines.replace(CERT_BEGIN, "").replace(END_CERT, "").replace("\n", "");
+        readLines = readLines.replace(BEGIN_CERT, "").replace(END_CERT, "").replace("\n", "");
 
         return fingerprint(Base64.getDecoder().decode(readLines.getBytes()));
     }
@@ -104,12 +104,12 @@ public class JKSUtil {
     }
 
     public static String byteToHex(final byte[] hash) {
-        Formatter formatter = new Formatter();
-        for (byte b : hash) {
-            formatter.format("%02x", b);
+        String result;
+        try (Formatter formatter = new Formatter()) {
+            for (byte b : hash) {
+                formatter.format("%02x", b);
+            }   result = formatter.toString();
         }
-        String result = formatter.toString();
-        formatter.close();
         return result;
     }
 }
