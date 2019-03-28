@@ -25,7 +25,7 @@ public class JKSUtil {
     private static final String CERT_BEGIN = "-----BEGIN CERTIFICATE-----\n";
     private static final String END_CERT = "-----END CERTIFICATE-----";
 
-    public static String extractFingerPrintFromPEM(String fileName) throws Throwable {
+    public static String extractFingerprintFromPEM(String fileName) throws Throwable {
         File file = loadFile(fileName);
 
         String readLines = readLines(file);
@@ -34,7 +34,7 @@ public class JKSUtil {
         return fingerprint(Base64.getDecoder().decode(readLines.getBytes()));
     }
 
-    public static String extractFingerPrintFromJKSCert(String jksName, String alias, String passwd) throws Throwable {
+    public static String extractFingerprintFromJKSCert(String jksName, String alias, String passwd) throws Throwable {
 
         File file = loadFile(jksName);
 

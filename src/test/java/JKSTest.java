@@ -12,7 +12,7 @@ public class JKSTest {
     @Test
     public void test() throws Throwable {
         assertEquals(
-                JKSUtil.extractFingerPrintFromJKSCert("test.jks", "test-alias", "123456"),
-                JKSUtil.extractFingerPrintFromPEM("test.pem"));
+                JKSUtil.extractFingerprintFromJKSCert("test.jks", "test-alias", "123456"),
+                JKSUtil.extractFingerprintFromPEM("test.pem"));
     }
 }
