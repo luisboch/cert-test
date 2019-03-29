@@ -1,8 +1,10 @@
 package org.luis.cert.test;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -13,6 +15,7 @@ import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateFactory;
 import java.util.Base64;
 import java.util.Formatter;
 
@@ -32,6 +35,19 @@ public class JKSUtil {
         readLines = readLines.replace(BEGIN_CERT, "").replace(END_CERT, "").replace("\n", "");
 
         return fingerprint(Base64.getDecoder().decode(readLines.getBytes()));
+    }
+
+    public static Certificate extractCertFromPEM(String fileName) throws Throwable {
+        File file = loadFile(fileName);
+
+        String readLines = readLines(file);
+        readLines = readLines.replace(BEGIN_CERT, "").replace(END_CERT, "").replace("\n", "");
+        byte[] decoded = Base64.getDecoder().decode(readLines);
+        CertificateFactory factory = CertificateFactory.getInstance("X.509");
+
+        try (InputStream in = new ByteArrayInputStream(decoded)) {
+            return factory.generateCertificate(in);
+        }
     }
 
     public static String extractFingerprintFromJKSCert(String jksName, String alias, String passwd) throws Throwable {
@@ -108,7 +124,8 @@ public class JKSUtil {
         try (Formatter formatter = new Formatter()) {
             for (byte b : hash) {
                 formatter.format("%02x", b);
-            }   result = formatter.toString();
+            }
+            result = formatter.toString();
         }
         return result;
     }

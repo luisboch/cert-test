@@ -14,5 +14,7 @@ public class JKSTest {
         assertEquals(
                 JKSUtil.extractFingerprintFromJKSCert("test.jks", "test-alias", "123456"),
                 JKSUtil.extractFingerprintFromPEM("test.pem"));
+
+        assertNotNull(JKSUtil.extractCertFromPEM("test.pem"));
     }
 }
